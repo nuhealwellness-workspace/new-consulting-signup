@@ -8,18 +8,39 @@
   <link rel="stylesheet" type="text/css" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
   <script>
     tailwind.config = {
-      theme: { extend: { colors: { brand: { beige: '#E4D198', oatmeal: '#DED4C1', milktea: '#C4B1A0', sage: '#B2BAA5' } } } }
+      theme: { 
+        extend: { 
+          colors: { 
+            brand: { 
+              dark: '#436142',    /* 圖中背景森林綠 */
+              gold: '#DED4C1',    /* 圖中 Logo 香檳金/燕麥色 */
+              accent: '#C4B1A0',  /* 輔助米色 */
+              soft: '#F4F1EC'     /* 淺米白底色 */
+            } 
+          } 
+        } 
+      }
     }
   </script>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&family=Noto+Sans+TC:wght@400;500;700&display=swap');
+    
     body { background-color: #F3F4F6; font-family: 'Noto Sans TC', sans-serif; color: #4A4A4A; }
+    .serif-title { font-family: 'Noto Serif TC', serif; }
+    
     .mobile-container { max-width: 500px; margin: 0 auto; background: white; min-height: 100vh; box-shadow: 0 10px 25px rgba(0,0,0,0.05); display: flex; flex-direction: column; }
+    
+    /* 輸入框優化 */
     .form-input { width: 100%; padding: 0.8rem 1rem; border: 1.5px solid #DED4C1; border-radius: 0.75rem; outline: none; transition: all 0.2s; font-size: 15px; background-color: #FAFAF8; -webkit-appearance: none; }
-    .form-input:focus { border-color: #B2BAA5; background-color: #fff; box-shadow: 0 0 0 3px rgba(178, 186, 165, 0.2); }
+    .form-input:focus { border-color: #436142; background-color: #fff; box-shadow: 0 0 0 3px rgba(67, 97, 66, 0.1); }
     .form-label { display: block; margin-bottom: 0.4rem; font-weight: 600; color: #6B7280; font-size: 0.9rem; }
+    
+    /* 按鈕樣式：使用圖中深綠與金色的對比 */
     .btn-primary { width: 100%; padding: 0.9rem; border-radius: 0.75rem; font-weight: bold; text-align: center; transition: all 0.2s; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem; font-size: 1.05rem; letter-spacing: 1px;}
     .btn-primary:disabled { opacity: 0.7; cursor: not-allowed; }
-    .btn-sage { background-color: #B2BAA5; color: white; }
+    .btn-brand { background-color: #436142; color: #DED4C1; border: 1px solid #436142; }
+    .btn-brand:not(:disabled):hover { background-color: #354d34; }
+    
     .hidden-sec { display: none !important; }
     @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     .animate-slide-up { animation: slideUp 0.5s ease forwards; }
@@ -28,19 +49,26 @@
 <body>
 
   <div class="mobile-container">
-    <div class="bg-brand-sage bg-opacity-10 pt-8 pb-6 px-6 text-center border-b border-brand-oatmeal border-opacity-50 sticky top-0 z-20 backdrop-blur-md">
-      <h1 class="text-3xl font-bold text-brand-milktea tracking-wider flex justify-center items-center gap-2">
-        <i class="ph ph-leaf"></i> NuHeal
-      </h1>
-      <p class="text-sm text-brand-sage font-bold mt-2 tracking-widest">夥伴系統註冊</p>
+    
+    <div class="bg-brand-dark pt-10 pb-8 px-6 text-center sticky top-0 z-20 shadow-lg">
+      <div class="flex flex-col items-center gap-2">
+        <div class="w-16 h-16 mb-2 flex items-center justify-center border-2 border-brand-gold rounded-full">
+            <i class="ph ph-hand-heart text-brand-gold text-4xl"></i>
+        </div>
+        <h1 class="text-3xl font-bold text-brand-gold tracking-widest serif-title">NuHeal</h1>
+        <div class="h-[1px] w-24 bg-brand-gold opacity-30 my-1"></div>
+        <p class="text-xs text-brand-gold font-medium tracking-[0.2em] opacity-90">WELLNESS & HEALTHCARE</p>
+      </div>
     </div>
 
     <div id="registerSection" class="flex flex-col p-6 sm:p-8 flex-1">
-      <p class="text-gray-500 text-sm mb-6 bg-gray-50 p-4 rounded-xl border border-gray-100 shadow-inner">
-        歡迎加入佳凱樂！請詳細填寫以下資料，註冊完成後將會寄送驗證與備份信件。
-      </p>
+      <div class="mb-8 text-center">
+        <h2 class="text-xl font-bold text-brand-dark mb-2">夥伴系統註冊</h2>
+        <p class="text-gray-400 text-xs">歡迎加入佳凱樂！請填寫以下資料完成註冊流程。</p>
+      </div>
 
       <form id="regForm" onsubmit="handleRegister(event)" class="flex flex-col gap-5 pb-10">
+        
         <div>
           <label class="form-label">職位名稱 *</label>
           <select name="role" required class="form-input bg-white">
@@ -58,14 +86,15 @@
         <div><label class="form-label">Line ID</label><input type="text" name="line" class="form-input" placeholder="選填"></div>
 
         <div>
-          <label class="form-label text-brand-sage"><i class="ph ph-chat-teardrop-text align-middle"></i> 有什麼想說的？</label>
-          <textarea name="message" class="form-input" placeholder="自我介紹或對佳凱樂的期許..."></textarea>
+          <label class="form-label text-brand-dark"><i class="ph ph-chat-teardrop-text align-middle"></i> 有什麼想說的？</label>
+          <textarea name="message" class="form-input" placeholder="對佳凱樂的期許..."></textarea>
         </div>
 
-        <hr class="border-brand-oatmeal border-dashed my-2">
+        <hr class="border-brand-gold border-dashed my-4 opacity-50">
 
-        <div class="bg-brand-beige bg-opacity-10 p-5 rounded-xl border border-brand-beige border-opacity-50">
-          <h3 class="font-bold text-brand-milktea mb-4 flex items-center gap-1"><i class="ph ph-lock-key"></i> 登入帳號設定</h3>
+        <div class="bg-brand-dark bg-opacity-[0.03] p-5 rounded-xl border border-brand-dark border-opacity-10">
+          <h3 class="font-bold text-brand-dark mb-4 flex items-center gap-1"><i class="ph ph-lock-key"></i> 登入帳號設定</h3>
+          
           <div class="flex flex-col gap-4">
             <div>
               <label class="form-label text-sm">登入 Email *</label>
@@ -78,13 +107,13 @@
             <div>
               <label class="form-label text-sm">再次確認密碼 *</label>
               <input type="password" id="confirmPassword" required class="form-input bg-white" placeholder="請再次輸入密碼">
-              <p id="pwdError" class="text-xs text-red-500 font-bold mt-1 hidden">密碼不一致！</p>
+              <p id="pwdError" class="text-xs text-red-500 font-bold mt-1 hidden"><i class="ph ph-warning-circle align-middle"></i> 密碼輸入不一致</p>
             </div>
           </div>
         </div>
 
-        <div class="pt-4">
-          <button type="submit" id="submitBtn" class="btn-primary btn-sage shadow-lg py-4">
+        <div class="pt-6">
+          <button type="submit" id="submitBtn" class="btn-primary btn-brand shadow-lg py-4">
             <i class="ph ph-user-plus text-xl"></i> 建立帳號並註冊
           </button>
           <div id="sysMsg" class="text-center mt-4 hidden text-sm font-bold p-3 rounded-lg"></div>
@@ -93,22 +122,32 @@
     </div>
 
     <div id="successSection" class="hidden-sec flex flex-col p-8 flex-1 justify-center items-center bg-gray-50">
-      <div class="w-full bg-white p-8 rounded-2xl shadow-xl border border-brand-oatmeal flex flex-col items-center gap-6 animate-slide-up">
-        <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center text-green-500 mb-2">
-          <i class="ph ph-check-circle text-5xl"></i>
+      <div class="w-full bg-white p-8 rounded-2xl shadow-xl border border-brand-gold border-opacity-30 flex flex-col items-center gap-6 animate-slide-up">
+        
+        <div class="w-20 h-20 bg-green-50 rounded-full flex items-center justify-center text-brand-dark mb-2">
+          <i class="ph ph-check-circle text-6xl"></i>
         </div>
+        
         <div class="text-center">
-          <h2 class="text-2xl font-bold text-gray-800 mb-2">註冊大成功！</h2>
-          <p class="text-sm text-gray-500">系統已發送備份信件，請查收。</p>
+          <h2 class="text-2xl font-bold text-gray-800 mb-2 serif-title">註冊大成功！</h2>
+          <p class="text-sm text-gray-500 leading-relaxed">
+            恭喜您成為 NuHeal 的夥伴！<br>
+            系統已發送備份信件，請檢查您的信箱。
+          </p>
         </div>
+
+        <div class="w-full border-t border-gray-100 my-2"></div>
+
         <a href="https://script.google.com/macros/s/AKfycbzElgMaDgwgMosYDin90psBVkQyb6N_tGeJWUkxA2F4QN44H2rXDVk3n0CwZ57u-4Lj/exec" 
-           class="btn-primary btn-sage py-4 text-lg w-full">前往工作站登入</a>
+           class="btn-primary btn-brand py-4 text-lg shadow-md w-full">
+          <i class="ph ph-rocket-launch text-xl"></i> 進入工作站登入
+        </a>
       </div>
     </div>
   </div>
 
   <script>
-    // 配置：請填入您的 GAS 部署網址
+    // 配置：請務必更換為您的 GAS 部署網址
     const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbwJSBhfEno4UcwKW0ZVoWqLlEVjSYyXwjyegxtSwQ7XzMEJ5JRRJApWPbYv21miO5KH/exec';
     const STORAGE_KEY = 'nuheal_reg_form_data';
 
@@ -116,36 +155,50 @@
       const form = document.getElementById('regForm');
       const savedData = localStorage.getItem(STORAGE_KEY);
       if (savedData) {
-        const parsed = JSON.parse(savedData);
-        Object.keys(parsed).forEach(k => { if(form.elements[k] && form.elements[k].type !== 'password') form.elements[k].value = parsed[k]; });
+        try {
+          const parsedData = JSON.parse(savedData);
+          Object.keys(parsedData).forEach(key => {
+            const field = form.elements[key];
+            if (field && field.type !== 'password') {
+              field.value = parsedData[key];
+            }
+          });
+        } catch (e) { console.error('Data Restore Error', e); }
       }
+
       form.addEventListener('input', (e) => {
-        if (e.target.type === 'password' || !e.target.name) return;
-        const current = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
-        current[e.target.name] = e.target.value;
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(current));
+        const target = e.target;
+        if (target.type === 'password' || !target.name) return;
+        const currentData = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+        currentData[target.name] = target.value;
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(currentData));
       });
     });
 
     async function handleRegister(e) {
       e.preventDefault();
+      
       const pwd = document.getElementById('password').value;
       const confirmPwd = document.getElementById('confirmPassword').value;
       const btn = document.getElementById('submitBtn');
       const sysMsg = document.getElementById('sysMsg');
+      const errorMsg = document.getElementById('pwdError');
 
       if (pwd !== confirmPwd) {
-        document.getElementById('pwdError').classList.remove('hidden');
+        errorMsg.classList.remove('hidden');
+        document.getElementById('confirmPassword').focus();
         return;
+      } else {
+        errorMsg.classList.add('hidden');
       }
 
       btn.disabled = true;
-      btn.innerHTML = '<i class="ph ph-spinner ph-spin"></i> 處理中...';
-      
+      btn.innerHTML = '<i class="ph ph-spinner ph-spin text-xl"></i> 系統寫入中...';
+      sysMsg.classList.add('hidden');
+
       const formData = Object.fromEntries(new FormData(e.target).entries());
 
       try {
-        // 使用 Fetch API 發送 POST 到 GAS
         const response = await fetch(GAS_API_URL, {
           method: 'POST',
           body: JSON.stringify(formData)
@@ -156,13 +209,14 @@
           localStorage.removeItem(STORAGE_KEY);
           document.getElementById('registerSection').classList.add('hidden-sec');
           document.getElementById('successSection').classList.remove('hidden-sec');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
         } else {
           throw new Error(res.message);
         }
       } catch (err) {
         sysMsg.classList.remove('hidden');
-        sysMsg.className = 'text-center mt-4 text-sm font-bold p-3 rounded-lg bg-red-50 text-red-500';
-        sysMsg.innerText = err.message;
+        sysMsg.className = 'text-center mt-4 text-sm font-bold p-3 rounded-lg bg-red-50 text-red-600 border border-red-200';
+        sysMsg.innerHTML = `<i class="ph ph-warning-circle align-middle"></i> ${err.message}`;
         btn.disabled = false;
         btn.innerHTML = '<i class="ph ph-user-plus text-xl"></i> 建立帳號並註冊';
       }
