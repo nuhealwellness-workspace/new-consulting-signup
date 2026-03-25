@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <title>NuHeal 佳凱樂 - 夥伴註冊系統</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" type="text/css" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+  <script>
+    tailwind.config = {
+      theme: { extend: { colors: { brand: { beige: '#E4D198', oatmeal: '#DED4C1', milktea: '#C4B1A0', sage: '#B2BAA5' } } } }
+    }
+  </script>
+  <style>
+    body { background-color: #F3F4F6; font-family: 'Noto Sans TC', sans-serif; color: #4A4A4A; }
+    .mobile-container { max-width: 500px; margin: 0 auto; background: white; min-height: 100vh; box-shadow: 0 10px 25px rgba(0,0,0,0.05); display: flex; flex-direction: column; }
+    .form-input { width: 100%; padding: 0.8rem 1rem; border: 1.5px solid #DED4C1; border-radius: 0.75rem; outline: none; transition: all 0.2s; font-size: 15px; background-color: #FAFAF8; -webkit-appearance: none; }
+    .form-input:focus { border-color: #B2BAA5; background-color: #fff; box-shadow: 0 0 0 3px rgba(178, 186, 165, 0.2); }
+    .form-label { display: block; margin-bottom: 0.4rem; font-weight: 600; color: #6B7280; font-size: 0.9rem; }
+    .btn-primary { width: 100%; padding: 0.9rem; border-radius: 0.75rem; font-weight: bold; text-align: center; transition: all 0.2s; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem; font-size: 1.05rem; letter-spacing: 1px;}
+    .btn-primary:disabled { opacity: 0.7; cursor: not-allowed; }
+    .btn-sage { background-color: #B2BAA5; color: white; }
+    .hidden-sec { display: none !important; }
+    @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .animate-slide-up { animation: slideUp 0.5s ease forwards; }
+  </style>
+</head>
+<body>
+
+  <div class="mobile-container">
+    <div class="bg-brand-sage bg-opacity-10 pt-8 pb-6 px-6 text-center border-b border-brand-oatmeal border-opacity-50 sticky top-0 z-20 backdrop-blur-md">
+      <h1 class="text-3xl font-bold text-brand-milktea tracking-wider flex justify-center items-center gap-2">
+        <i class="ph ph-leaf"></i> NuHeal
+      </h1>
+      <p class="text-sm text-brand-sage font-bold mt-2 tracking-widest">夥伴系統註冊</p>
+    </div>
+
+    <div id="registerSection" class="flex flex-col p-6 sm:p-8 flex-1">
+      <p class="text-gray-500 text-sm mb-6 bg-gray-50 p-4 rounded-xl border border-gray-100 shadow-inner">
+        歡迎加入佳凱樂！請詳細填寫以下資料，註冊完成後將會寄送驗證與備份信件。
+      </p>
+
+      <form id="regForm" onsubmit="handleRegister(event)" class="flex flex-col gap-5 pb-10">
+        <div>
+          <label class="form-label">職位名稱 *</label>
+          <select name="role" required class="form-input bg-white">
+            <option value="" disabled selected>請選擇職位</option>
+            <option value="營養師">營養師</option>
+            <option value="管理員">管理員</option>
+            <option value="系統維護人員">系統維護人員</option>
+          </select>
+        </div>
+
+        <div><label class="form-label">姓名 *</label><input type="text" name="name" required class="form-input" placeholder="請填寫真實姓名"></div>
+        <div><label class="form-label">聯繫電話 *</label><input type="tel" name="phone" required class="form-input" placeholder="如：0912-345678"></div>
+        <div><label class="form-label">聯繫地址</label><input type="text" name="address" class="form-input" placeholder="請填寫通訊地址"></div>
+        <div><label class="form-label">出生年月日</label><input type="date" name="dob" class="form-input bg-white"></div>
+        <div><label class="form-label">Line ID</label><input type="text" name="line" class="form-input" placeholder="選填"></div>
+
+        <div>
+          <label class="form-label text-brand-sage"><i class="ph ph-chat-teardrop-text align-middle"></i> 有什麼想說的？</label>
+          <textarea name="message" class="form-input" placeholder="自我介紹或對佳凱樂的期許..."></textarea>
+        </div>
+
+        <hr class="border-brand-oatmeal border-dashed my-2">
+
+        <div class="bg-brand-beige bg-opacity-10 p-5 rounded-xl border border-brand-beige border-opacity-50">
+          <h3 class="font-bold text-brand-milktea mb-4 flex items-center gap-1"><i class="ph ph-lock-key"></i> 登入帳號設定</h3>
+          <div class="flex flex-col gap-4">
+            <div>
+              <label class="form-label text-sm">登入 Email *</label>
+              <input type="email" name="email" id="email" required class="form-input bg-white" placeholder="此為未來登入系統之帳號">
+            </div>
+            <div>
+              <label class="form-label text-sm">註冊密碼 *</label>
+              <input type="password" name="password" id="password" required class="form-input bg-white" placeholder="請輸入密碼">
+            </div>
+            <div>
+              <label class="form-label text-sm">再次確認密碼 *</label>
+              <input type="password" id="confirmPassword" required class="form-input bg-white" placeholder="請再次輸入密碼">
+              <p id="pwdError" class="text-xs text-red-500 font-bold mt-1 hidden">密碼不一致！</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-4">
+          <button type="submit" id="submitBtn" class="btn-primary btn-sage shadow-lg py-4">
+            <i class="ph ph-user-plus text-xl"></i> 建立帳號並註冊
+          </button>
+          <div id="sysMsg" class="text-center mt-4 hidden text-sm font-bold p-3 rounded-lg"></div>
+        </div>
+      </form>
+    </div>
+
+    <div id="successSection" class="hidden-sec flex flex-col p-8 flex-1 justify-center items-center bg-gray-50">
+      <div class="w-full bg-white p-8 rounded-2xl shadow-xl border border-brand-oatmeal flex flex-col items-center gap-6 animate-slide-up">
+        <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center text-green-500 mb-2">
+          <i class="ph ph-check-circle text-5xl"></i>
+        </div>
+        <div class="text-center">
+          <h2 class="text-2xl font-bold text-gray-800 mb-2">註冊大成功！</h2>
+          <p class="text-sm text-gray-500">系統已發送備份信件，請查收。</p>
+        </div>
+        <a href="https://script.google.com/macros/s/AKfycbzElgMaDgwgMosYDin90psBVkQyb6N_tGeJWUkxA2F4QN44H2rXDVk3n0CwZ57u-4Lj/exec" 
+           class="btn-primary btn-sage py-4 text-lg w-full">前往工作站登入</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 配置：請填入您的 GAS 部署網址
+    const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbwJSBhfEno4UcwKW0ZVoWqLlEVjSYyXwjyegxtSwQ7XzMEJ5JRRJApWPbYv21miO5KH/exec';
+    const STORAGE_KEY = 'nuheal_reg_form_data';
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('regForm');
+      const savedData = localStorage.getItem(STORAGE_KEY);
+      if (savedData) {
+        const parsed = JSON.parse(savedData);
+        Object.keys(parsed).forEach(k => { if(form.elements[k] && form.elements[k].type !== 'password') form.elements[k].value = parsed[k]; });
+      }
+      form.addEventListener('input', (e) => {
+        if (e.target.type === 'password' || !e.target.name) return;
+        const current = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+        current[e.target.name] = e.target.value;
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(current));
+      });
+    });
+
+    async function handleRegister(e) {
+      e.preventDefault();
+      const pwd = document.getElementById('password').value;
+      const confirmPwd = document.getElementById('confirmPassword').value;
+      const btn = document.getElementById('submitBtn');
+      const sysMsg = document.getElementById('sysMsg');
+
+      if (pwd !== confirmPwd) {
+        document.getElementById('pwdError').classList.remove('hidden');
+        return;
+      }
+
+      btn.disabled = true;
+      btn.innerHTML = '<i class="ph ph-spinner ph-spin"></i> 處理中...';
+      
+      const formData = Object.fromEntries(new FormData(e.target).entries());
+
+      try {
+        // 使用 Fetch API 發送 POST 到 GAS
+        const response = await fetch(GAS_API_URL, {
+          method: 'POST',
+          body: JSON.stringify(formData)
+        });
+        const res = await response.json();
+
+        if (res.status === 'success') {
+          localStorage.removeItem(STORAGE_KEY);
+          document.getElementById('registerSection').classList.add('hidden-sec');
+          document.getElementById('successSection').classList.remove('hidden-sec');
+        } else {
+          throw new Error(res.message);
+        }
+      } catch (err) {
+        sysMsg.classList.remove('hidden');
+        sysMsg.className = 'text-center mt-4 text-sm font-bold p-3 rounded-lg bg-red-50 text-red-500';
+        sysMsg.innerText = err.message;
+        btn.disabled = false;
+        btn.innerHTML = '<i class="ph ph-user-plus text-xl"></i> 建立帳號並註冊';
+      }
+    }
+  </script>
+</body>
+</html>
